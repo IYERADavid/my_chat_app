@@ -1,5 +1,6 @@
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
-import { auth } from '../firebase.js'
+import { doc, getDoc, setDoc } from "firebase/firestore"
+import { auth, db } from '../firebase.js'
 import { Button, Container } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import profile from './images.jpeg' 
@@ -22,12 +23,22 @@ const usestyles = makeStyles(()=> ({
     }
 }))
 
-const Signin = () => {
+const Signin = ({ setuser }) => {
     const classes = usestyles()
 
-    const signin_with_google = () => {
+    const signin_with_google = async () => {
         const provider = new GoogleAuthProvider()
-        signInWithPopup(auth, provider)
+        await signInWithPopup(auth, provider)
+        if (auth.currentUser) {
+            const docRef = doc(db, "users", auth.currentUser.email)
+            const docSnap = await getDoc(docRef);
+            if (!docSnap.exists()) {
+                const usersRef = doc(db, 'users', auth.currentUser.email)
+                await setDoc(usersRef, {})
+            }
+        } else {
+            alert("Please try login again")
+        }
     }
     return (
         <>
