@@ -3,5 +3,5 @@ body {
     background-color: aliceblue;
 }
 #root {
-    height: 100%;
+    min-height: 100vh;
 }

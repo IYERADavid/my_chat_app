@@ -6,7 +6,8 @@ import Button from '@material-ui/core/Button';
 import { auth } from '../firebase'
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    flex: "0 1 auto",
+    paddingBottom: "10px"
   },
   title: {
     flexGrow: 1,

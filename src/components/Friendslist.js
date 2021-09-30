@@ -1,16 +1,12 @@
 import { useState, useEffect } from 'react'
 import { collection, query, orderBy, onSnapshot } from "firebase/firestore"; 
 import { makeStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import { db, auth } from '../firebase'
 
 const useStyles = makeStyles((theme) => ({
-    container:{
-        height: "100%"
-    },
     root: {
       width: '100%',
       backgroundColor: theme.palette.background.paper,
@@ -32,18 +28,14 @@ const Friendslist = () => {
     }, [])
     return (
         <>
-            <Grid container wrap="nowrap" spacing={0} className={classes.container}>
-                <Grid item xs={12} md={4} className={classes.container}>
-                    <List className={classes.root}>
-                        {receivers.map(({id, last_conv_time}) => (
-                            <ListItem key={id} button>
-                                <ListItemText primary={id}
-                                secondary={last_conv_time.seconds} />
-                            </ListItem>
-                        ))}
-                    </List>
-                </Grid>
-            </Grid>
+            <List className={classes.root}>
+                {receivers.map(({id, last_conv_time}) => (
+                    <ListItem key={id} button>
+                        <ListItemText primary={id}
+                        secondary={last_conv_time.seconds} />
+                    </ListItem>
+                ))}
+            </List>
         </>
     )
 }

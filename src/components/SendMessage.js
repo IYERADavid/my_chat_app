@@ -16,11 +16,13 @@ const SendMessage = () => {
             receiver_email,
             createdAt
         })
+        console.log("good now")
         const usersRef = doc(db, 'users', sender_email, 'receivers', receiver_email)
         await setDoc(usersRef, {
             last_conv_time : createdAt
         },
         { merge: true })
+        console.log("perfect")
         setmsg("")
     }
     return (
