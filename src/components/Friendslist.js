@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { collection, query, orderBy, onSnapshot } from "firebase/firestore"; 
+import { collection, query, where, orderBy, onSnapshot } from "firebase/firestore"; 
 import { makeStyles } from '@material-ui/core/styles'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -13,26 +13,29 @@ const useStyles = makeStyles((theme) => ({
       position: 'relative',
       overflow: 'auto',
       height: "100%",
+      maxHeight: "100vh"
     }
 }))
 
-const Friendslist = () => {
+const Friendslist = ({setreceiver_email}) => {
     const classes = useStyles()
     const [receivers, setreceivers] = useState([])
     useEffect(() => {
-        const receiversRef = collection(db, "users", auth.currentUser.email, "receivers")
-        const reciever_query = query(receiversRef, orderBy("last_conv_time", "Desc"))
-        const unsub = onSnapshot(reciever_query, snapshot => {
+        const user_email = auth.currentUser.email
+        const friendsRef = collection(db, "friends")
+        const friends_query = query(friendsRef, where("friender_email","==",user_email), orderBy("last_conv_time", "desc"))
+        const unsub = onSnapshot(friends_query, snapshot => {
             setreceivers(snapshot.docs.map(doc => ({id:doc.id, ...doc.data()}) ))
         }) 
     }, [])
     return (
         <>
             <List className={classes.root}>
-                {receivers.map(({id, last_conv_time}) => (
-                    <ListItem key={id} button>
-                        <ListItemText primary={id}
-                        secondary={last_conv_time.seconds} />
+                {receivers.map(({id, friend_email, last_conv_time}) => (
+                    <ListItem key={id} button 
+                    onClick={() => setreceiver_email(friend_email)}>
+                        <ListItemText primary={friend_email}
+                        secondary={last_conv_time ? last_conv_time.seconds : null} />
                     </ListItem>
                 ))}
             </List>

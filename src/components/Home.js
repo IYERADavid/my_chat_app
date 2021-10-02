@@ -24,10 +24,13 @@ const Home = () => {
             <Navbar />
             <Grid container wrap="nowrap" spacing={0} className={classes.container}>
                 <Grid item xs={12} md={4}>
-                    <Friendslist />
+                    <Friendslist setreceiver_email={setreceiver_email} />
                 </Grid>
                 <Grid item xs={12} md={8}>
-                    <Chat /> 
+                    {receiver_email ?
+                    <Chat receiver_email={receiver_email} /> :
+                    <p>nothing yet</p>
+                    }
                 </Grid>
             </Grid>
         </div>
